@@ -10,7 +10,7 @@ def get_data(data_path="../data/SeoulBikeData.csv",testData = False):
 
     df = pd.read_csv(data_path, engine='python')
     df = df.select_dtypes(include=[np.number]) #select columns with numerical data
-    df["target"] = df["Rented Bike Count"].apply(lambda x : 1 if  x > 500 else 0)
+    df["target"] = df["Rented Bike Count"]
     df.drop(["Rented Bike Count"],axis=1,inplace=True)
 
     if testData :
