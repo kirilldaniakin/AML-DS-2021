@@ -11,7 +11,8 @@ Original file is located at
 
 # Commented out IPython magic to ensure Python compatibility.
 import numpy as np
-
+from context import scripts
+import scripts
 import tensorflow as tf
 import datetime
 # %load_ext tensorboard
