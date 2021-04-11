@@ -79,7 +79,7 @@ if __name__ == '__main__':
                       validation_steps=30, callbacks=[tensorboard_callback])
   print("baseline summary:")
   model.summary()
-  model.save('baseline.tf')
+  model.save('baseline')
 
   # save tuned LSTM
   model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
@@ -92,7 +92,7 @@ if __name__ == '__main__':
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
 
-  model.save('custom_lstm.tf')
+  model.save('custom_lstm')
 
   # Commented out IPython magic to ensure Python compatibility.
   # %tensorboard --logdir logs/scalars
@@ -139,7 +139,7 @@ if __name__ == '__main__':
   history = classic_model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
-  classic_model.save('classic_model.tf')
+  classic_model.save('classic_model')
 
   # Commented out IPython magic to ensure Python compatibility.
   # %tensorboard --logdir logs/scalars
