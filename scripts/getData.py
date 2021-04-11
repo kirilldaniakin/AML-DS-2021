@@ -2,8 +2,8 @@ import pandas as pd
 import os
 
 def get_data(data_path="../data"):
-  assert os.path.isfile(data_path), f"{os.path.realpath(data_path)} : File not exist"
-    
+  assert os.path.isfile(data_path+"/train_eng.csv"), f"{os.path.realpath(data_path)} : File not exist"
+  assert os.path.isfile(data_path+"/test_eng.csv"), f"{os.path.realpath(data_path)} : File not exist"
   # read data
   train_data = pd.read_csv(data_path+"/train_eng.csv", engine='python' ,encoding = "latin-1")
   test_data = pd.read_csv(data_path+"/test_eng.csv", engine='python' ,encoding = "latin-1")
