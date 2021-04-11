@@ -22,7 +22,7 @@ if __name__ == '__main__':
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
   baseline = tf.keras.models.load_model("baseline")
   custom = tf.keras.models.load_model("custom_lstm")
-  classic = tf.keras.models.load_model("classic")
+  classic = tf.keras.models.load_model("classic_model")
   
   test_loss, test_acc = baseline.evaluate(test_dataset)
 
