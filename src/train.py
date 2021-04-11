@@ -15,6 +15,7 @@ from context import scripts
 import scripts
 import tensorflow as tf
 import datetime
+
 # %load_ext tensorboard
 if __name__ == '__main__':
   # get data and max name length
