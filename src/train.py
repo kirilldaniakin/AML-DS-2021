@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
   logdir = "logs/scalars/classic_lr_" + str(lr) + "_eps_" + str(1e-4) 
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-  history = classic_model.fit(train_dataset, epochs=5,
+  history = model.fit(train_dataset, epochs=5,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
 
