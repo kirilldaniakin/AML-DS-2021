@@ -10,18 +10,19 @@ Original file is located at
 """
 
 # Commented out IPython magic to ensure Python compatibility.
-
+print("start train")
 import numpy as np
 from context import scripts
 import scripts
 import tensorflow as tf
 import datetime
-
+print("begin train")
 # %load_ext tensorboard
 if __name__ == '__main__':
   # get data and max name length
+  print('hi')
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
-
+  print('hi got pie')
   # creating vocabulary
   VOCAB_SIZE = 54 # 26 lower + 26 upper + 2 special
   encoder = tf.keras.layers.experimental.preprocessing.TextVectorization(
