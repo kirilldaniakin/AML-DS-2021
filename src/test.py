@@ -6,6 +6,16 @@ import datetime
 from context import scripts
 import scripts
 
+import matplotlib.pyplot as plt
+
+
+def plot_graphs(history, metric):
+  plt.plot(history.history[metric])
+  plt.plot(history.history['val_'+metric], '')
+  plt.xlabel("Epochs")
+  plt.ylabel(metric)
+  plt.legend([metric, 'val_'+metric])
+
 # %load_ext tensorboard
 if __name__ == '__main__':
   # get data and max name length
