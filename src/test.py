@@ -8,9 +8,10 @@ import scripts
 
 # %load_ext tensorboard
 if __name__ == '__main__':
+  print("hi test pie")
   # get data and max name length
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
-  
+  print("hi test pie got data")
   baseline = tf.keras.models.load_model("baseline.tf")
   custom = tf.keras.models.load_model("custom_lstm.tf")
   classic = tf.keras.models.load_model("classic.tf")
