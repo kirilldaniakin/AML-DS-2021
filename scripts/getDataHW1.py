@@ -52,4 +52,4 @@ def get_data(data_path="../data",testData = False):
     return train_data, test_data, max_len
 
 if __name__ == '__main__':
-    main(None)
+    pass
