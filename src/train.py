@@ -12,13 +12,10 @@ Original file is located at
 # Commented out IPython magic to ensure Python compatibility.
 import numpy as np
 
-import tensorflow_datasets as tfds
 import tensorflow as tf
 import datetime
 # %load_ext tensorboard
 if __name__ == '__main__':
-  tfds.disable_progress_bar()
-
   # get data and max name length
   train_data, test_data, max_len = scripts.get_data(data_path="../data/SeoulBikeData.csv",
 
