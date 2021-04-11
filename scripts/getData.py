@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def get_data(data_path="../data"):
   assert os.path.isfile(data_path), f"{os.path.realpath(data_path)} : File not exist"
