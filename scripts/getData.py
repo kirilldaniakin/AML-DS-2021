@@ -29,7 +29,7 @@ def get_data(data_path="../data"):
     for char in range(len(test_data.Name[name])):
       names += test_data.Name[name][char]+' '
     test_data.Name[name] = name
-    print(test_data.iloc[:,0])
+  print(test_data.iloc[:,0])
     
     # to tensors
   train_dataset = tf.data.Dataset.from_tensor_slices(
