@@ -3,7 +3,14 @@ import numpy as np
 import tensorflow as tf
 import datetime
 # %load_ext tensorboard
+from context import scripts
+import scripts
+
+# %load_ext tensorboard
 if __name__ == '__main__':
+  # get data and max name length
+  train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
+  
   baseline = tf.keras.models.load_model("baseline.tf")
   custom = tf.keras.models.load_model("custom_lstm.tf")
   classic = tf.keras.models.load_model("classic.tf")
