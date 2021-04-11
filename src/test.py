@@ -4,9 +4,9 @@ import tensorflow as tf
 import datetime
 # %load_ext tensorboard
 if __name__ == '__main__':
-  baseline = tf.keras.models.load_model("baseline.h5")
-  custom = tf.keras.models.load_model("custom_lstm.h5")
-  classic = tf.keras.models.load_model("classic.h5")
+  baseline = tf.keras.models.load_model("baseline.tf")
+  custom = tf.keras.models.load_model("custom_lstm.tf")
+  classic = tf.keras.models.load_model("classic.tf")
   
   test_loss, test_acc = baseline.evaluate(test_dataset)
 
