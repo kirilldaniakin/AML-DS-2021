@@ -52,7 +52,7 @@ def get_data(data_path="../data"):
   train_dataset = train_dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
   test_dataset = test_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
-  return train_data, test_data, max_len
+  return train_dataset, test_dataset, max_len
 
 if __name__ == '__main__':
   pass
