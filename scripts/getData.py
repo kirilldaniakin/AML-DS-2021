@@ -30,7 +30,7 @@ def get_data(data_path="../data"):
     names=''
     for char in range(len(test_data.Name[name])):
       names += test_data.Name[name][char]+' '
-    test_data.Name[name] = name
+    test_data.Name[name] = names
   print(test_data.iloc[:,0])
     
     # to tensors
