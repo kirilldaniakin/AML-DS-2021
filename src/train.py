@@ -20,7 +20,7 @@ import datetime
 # %load_ext tensorboard
 if __name__ == '__main__':
   # get data and max name length
-  train_data, test_data, max_len = scripts.get_data(data_path="../data")
+  train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
 
   # creating vocabulary
   VOCAB_SIZE = 54 # 26 lower + 26 upper + 2 special
