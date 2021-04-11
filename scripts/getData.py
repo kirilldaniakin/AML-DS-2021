@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import tensorflow as tf
+import numpy as np
 
 def get_data(data_path="../data"):
   assert os.path.isfile(data_path+"/train_eng.csv"), f"{os.path.realpath(data_path)} : File not exist"
