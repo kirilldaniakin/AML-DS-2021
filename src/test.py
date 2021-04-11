@@ -20,9 +20,9 @@ def plot_graphs(history, metric):
 if __name__ == '__main__':
   # get data and max name length
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
-  baseline = tf.keras.models.load_model("baseline.tf")
-  custom = tf.keras.models.load_model("custom_lstm.tf")
-  classic = tf.keras.models.load_model("classic.tf")
+  baseline = tf.keras.models.load_model("baseline")
+  custom = tf.keras.models.load_model("custom_lstm")
+  classic = tf.keras.models.load_model("classic")
   
   test_loss, test_acc = baseline.evaluate(test_dataset)
 
