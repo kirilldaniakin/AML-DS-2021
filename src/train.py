@@ -50,23 +50,8 @@ if __name__ == '__main__':
       tf.keras.layers.Dense(1, activation='sigmoid')
   ])
 
-  # HP tuning
-  # tensorboard_callback will save running logs, so it's possible to see with command: tensorboard --logdir=logs                                                 
-  lrs = [1e-3, 1e-4, 1e-5]
-  epochs = [5, 10, 20]
-
-  for lr in lrs:  
-    model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                optimizer=tf.keras.optimizers.Adam(lr),
-                metrics=['accuracy'])
-    for eps in epochs:
-      logdir = "logs/scalars/lr_" + str(lr) + "_eps_" + str(eps) 
-      tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-      history = model.fit(train_dataset, epochs=eps,
-                          validation_data=test_dataset,
-                          validation_steps=30, callbacks=[tensorboard_callback],
-                          verbose=0)
-
+  # For HP tuning see hw1.ipynb notebook in notebooks folder (hw1.ipynb.txt)
+ 
   # Train the baseline model and save
   logdir = "logs/scalars/" + "baseline"
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
@@ -86,6 +71,8 @@ if __name__ == '__main__':
                 optimizer=tf.keras.optimizers.Adam(1e-4),
                 metrics=['accuracy'])
 
+    
+  # best tuned LSTM (see hw1.ipynb)  
   logdir = "logs/scalars/classic_lr_" + str(lr) + "_eps_" + str(1e-4) 
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
   history = model.fit(train_dataset, epochs=5,
@@ -111,26 +98,9 @@ if __name__ == '__main__':
       tf.keras.layers.Dense(1, activation='sigmoid')
   ])
 
-  # HP tuning
-  lrs = [1e-3, 1e-4, 1e-5]
-  epochs = [5, 10, 20]
+  # For HP tuning see notebook hw1
 
-  for lr in lrs:
-    classic_model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                optimizer=tf.keras.optimizers.Adam(lr),
-                metrics=['accuracy'])
-    for eps in epochs:
-      logdir = "logs/scalars/classic_lr_" + str(lr) + "_eps_" + str(eps) 
-      tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-      history = classic_model.fit(train_dataset, epochs=eps,
-                          validation_data=test_dataset,
-                          validation_steps=30, callbacks=[tensorboard_callback],
-                          verbose=0)
-
-  print("calssic model summary:")
-  classic_model.summary()
-
-  # save tuned model (looking at tensorboard, this model is the "best" on test set)
+  # save tuned model (looking at tensorboard, this model is the "best" on test set from HP tuning)
   classic_model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 optimizer=tf.keras.optimizers.Adam(1e-3),
                 metrics=['accuracy'])
@@ -139,6 +109,8 @@ if __name__ == '__main__':
   history = classic_model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
+  print("calssic model summary:")
+  classic_model.summary()
   classic_model.save('classic_model')
 
   # Commented out IPython magic to ensure Python compatibility.
