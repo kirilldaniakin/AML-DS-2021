@@ -8,6 +8,24 @@ import scripts
 
 import matplotlib.pyplot as plt
 
+from tensorflow.keras import backend as K
+
+def recall_m(y_true, y_pred):
+  true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+  possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+  recall = true_positives / (possible_positives + K.epsilon())
+  return recall
+
+def precision_m(y_true, y_pred):
+  true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+  predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+  precision = true_positives / (predicted_positives + K.epsilon())
+  return precision
+
+def f1_score(y_true, y_pred):
+  precision = precision_m(y_true, y_pred)
+  recall = recall_m(y_true, y_pred)
+  return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
 def plot_graphs(history, metric):
   plt.plot(history.history[metric])
@@ -20,9 +38,9 @@ def plot_graphs(history, metric):
 if __name__ == '__main__':
   # get data and max name length
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
-  baseline = tf.keras.models.load_model("baseline")
-  custom = tf.keras.models.load_model("custom_lstm")
-  classic = tf.keras.models.load_model("classic_model")
+  baseline = tf.keras.models.load_model("baseline", custom_objects={'f1_score':f1_score})
+  custom = tf.keras.models.load_model("custom_lstm", custom_objects={'f1_score':f1_score})
+  classic = tf.keras.models.load_model("classic_model", custom_objects={'f1_score':f1_score})
   
   test_loss, test_acc, f1 = baseline.evaluate(test_dataset)
 
