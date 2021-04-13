@@ -24,14 +24,14 @@ def get_data(data_path="../data"):
     for char in range(len(train_data.Name[name])):
       names += train_data.Name[name][char]+' '
     train_data.Name[name] = names
-  print(train_data.iloc[:,0])
+  #print(train_data.iloc[:,0])
 
   for name in range(len(list(test_data.iloc[:,0]))):
     names=''
     for char in range(len(test_data.Name[name])):
       names += test_data.Name[name][char]+' '
     test_data.Name[name] = names
-  print(test_data.iloc[:,0])
+  #print(test_data.iloc[:,0])
     
     # to tensors
   train_dataset = tf.data.Dataset.from_tensor_slices(
