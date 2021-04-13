@@ -43,7 +43,7 @@ if __name__ == '__main__':
               optimizer=tf.keras.optimizers.Adam(1e-03),
               metrics=['accuracy', f1_score])
   custom = tf.keras.models.load_model("custom_lstm", custom_objects={'f1_score':f1_score})
-  classic.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+  custom.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               optimizer=tf.keras.optimizers.Adam(1e-03),
               metrics=['accuracy', f1_score])
   classic = tf.keras.models.load_model("classic_model", custom_objects={'f1_score':f1_score})
