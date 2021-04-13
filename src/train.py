@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     
   # best tuned LSTM (see hw1.ipynb)  
-  logdir = "logs/scalars/classic_lr_" + str(lr) + "_eps_" + str(1e-4) 
+  logdir = "logs/scalars/classic_lr_" + str(1e-4) + "_eps_" + str(5) 
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
   history = model.fit(train_dataset, epochs=5,
                           validation_data=test_dataset,
@@ -104,7 +104,7 @@ if __name__ == '__main__':
   classic_model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 optimizer=tf.keras.optimizers.Adam(1e-3),
                 metrics=['accuracy'])
-  logdir = "logs/scalars/classic_lr_" + str(lr) + "_eps_" + str(1e-3) 
+  logdir = "logs/scalars/classic_lr_" + str(1e-3) + "_eps_" + str(20) 
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
   history = classic_model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
