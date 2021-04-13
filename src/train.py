@@ -15,9 +15,7 @@ from context import scripts
 import scripts
 import tensorflow as tf
 import datetime
-from tensorflow import keras
-
-from keras import backend as K
+from tensorflow.keras import backend as K
 
 def recall_m(y_true, y_pred):
   true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
