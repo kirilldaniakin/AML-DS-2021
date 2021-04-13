@@ -16,6 +16,26 @@ import scripts
 import tensorflow as tf
 import datetime
 
+from keras import backend as K
+
+def recall_m(y_true, y_pred):
+  true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+  possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+  recall = true_positives / (possible_positives + K.epsilon())
+  return recall
+
+def precision_m(y_true, y_pred):
+  true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+  predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+  precision = true_positives / (predicted_positives + K.epsilon())
+  return precision
+
+def f1_score(y_true, y_pred):
+  precision = precision_m(y_true, y_pred)
+  recall = recall_m(y_true, y_pred)
+  return 2*((precision*recall)/(precision+recall+K.epsilon()))
+
+
 # %load_ext tensorboard
 if __name__ == '__main__':
   # get data and max name length
@@ -54,11 +74,11 @@ if __name__ == '__main__':
  
   # Train the baseline model and save
   logdir = "logs/scalars/" + "baseline"
-  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
   print("baseline train:")
   model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 optimizer=tf.keras.optimizers.Adam(1e-3),
-                metrics=['accuracy'])
+                metrics=['accuracy', f1_score])
   history = model.fit(train_dataset, epochs=100,
                       validation_data=test_dataset,
                       validation_steps=30, callbacks=[tensorboard_callback])
@@ -69,12 +89,12 @@ if __name__ == '__main__':
   # save tuned LSTM
   model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 optimizer=tf.keras.optimizers.Adam(1e-4),
-                metrics=['accuracy'])
+                metrics=['accuracy', f1_score])
 
     
   # best tuned LSTM (see hw1.ipynb)  
   logdir = "logs/scalars/classic_lr_" + str(1e-4) + "_eps_" + str(5) 
-  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
   history = model.fit(train_dataset, epochs=5,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
@@ -103,9 +123,9 @@ if __name__ == '__main__':
   # save tuned model (looking at tensorboard, this model is the "best" on test set from HP tuning)
   classic_model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                 optimizer=tf.keras.optimizers.Adam(1e-3),
-                metrics=['accuracy'])
+                metrics=['accuracy', f1_score])
   logdir = "logs/scalars/classic_lr_" + str(1e-3) + "_eps_" + str(20) 
-  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+  tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
   history = classic_model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback])
