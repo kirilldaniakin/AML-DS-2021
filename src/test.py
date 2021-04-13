@@ -39,8 +39,17 @@ if __name__ == '__main__':
   # get data and max name length
   train_dataset, test_dataset, max_len = scripts.get_data(data_path="../data")
   baseline = tf.keras.models.load_model("baseline", custom_objects={'f1_score':f1_score})
+  baseline.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              optimizer=tf.keras.optimizers.Adam(1e-03),
+              metrics=['accuracy', f1_score])
   custom = tf.keras.models.load_model("custom_lstm", custom_objects={'f1_score':f1_score})
+  classic.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              optimizer=tf.keras.optimizers.Adam(1e-03),
+              metrics=['accuracy', f1_score])
   classic = tf.keras.models.load_model("classic_model", custom_objects={'f1_score':f1_score})
+  classic.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              optimizer=tf.keras.optimizers.Adam(1e-03),
+              metrics=['accuracy', f1_score])
   
   test_loss, test_acc, f1 = baseline.evaluate(test_dataset)
 
