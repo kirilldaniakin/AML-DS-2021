@@ -24,17 +24,20 @@ if __name__ == '__main__':
   custom = tf.keras.models.load_model("custom_lstm")
   classic = tf.keras.models.load_model("classic_model")
   
-  test_loss, test_acc = baseline.evaluate(test_dataset)
+  test_loss, test_acc, f1 = baseline.evaluate(test_dataset)
 
   print('baseline Test Loss:', test_loss)
   print('baseline Test Accuracy:', test_acc)
+  print('baseline Test F1:', f1)
   
-  test_loss, test_acc = custom.evaluate(test_dataset)
+  test_loss, test_acc, f1 = custom.evaluate(test_dataset)
 
   print('custom lstm Test Loss:', test_loss)
   print('custom lstm Test Accuracy:', test_acc)
+  print('custom lstm Test F1:', f1)
   
-  test_loss, test_acc = classic.evaluate(test_dataset)
+  test_loss, test_acc, f1 = classic.evaluate(test_dataset)
 
   print('classic Test Loss:', test_loss)
   print('classic Test Accuracy:', test_acc)
+  print('classic Test F1:', f1)
