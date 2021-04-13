@@ -29,7 +29,7 @@ if __name__ == '__main__':
   print('baseline Test Loss:', test_loss)
   print('baseline Test Accuracy:', test_acc)
   
-  test_loss, test_acc = classic.evaluate(test_dataset)
+  test_loss, test_acc = custom.evaluate(test_dataset)
 
   print('custom lstm Test Loss:', test_loss)
   print('custom lstm Test Accuracy:', test_acc)
