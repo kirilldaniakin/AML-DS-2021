@@ -15,6 +15,7 @@ from context import scripts
 import scripts
 import tensorflow as tf
 import datetime
+from tf import keras
 
 from keras import backend as K
 
