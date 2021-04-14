@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 metrics=['accuracy', f1_score])
   history = model.fit(train_dataset, epochs=100,
                       validation_data=test_dataset,
-                      validation_steps=30, callbacks=[tensorboard_callback])
+                      validation_steps=30, callbacks=[tensorboard_callback],verbose=0)
   print("baseline summary:")
   model.summary()
   model.save('baseline')
@@ -96,7 +96,7 @@ if __name__ == '__main__':
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
   history = model.fit(train_dataset, epochs=5,
                           validation_data=test_dataset,
-                          validation_steps=30, callbacks=[tensorboard_callback])
+                          validation_steps=30, callbacks=[tensorboard_callback],verbose=0)
 
   model.save('custom_lstm')
 
@@ -127,7 +127,7 @@ if __name__ == '__main__':
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
   history = classic_model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
-                          validation_steps=30, callbacks=[tensorboard_callback])
+                          validation_steps=30, callbacks=[tensorboard_callback],verbose=0)
   print("calssic model summary:")
   classic_model.summary()
   classic_model.save('classic_model')
