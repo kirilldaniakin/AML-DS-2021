@@ -87,14 +87,14 @@ if __name__ == '__main__':
 
   # save tuned LSTM
   model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                optimizer=tf.keras.optimizers.Adam(1e-4),
+                optimizer=tf.keras.optimizers.Adam(1e-3),
                 metrics=['accuracy', f1_score])
 
     
   # best tuned LSTM (see hw1.ipynb)  
-  logdir = "logs/scalars/classic_lr_" + str(1e-4) + "_eps_" + str(5) 
+  logdir = "logs/scalars/classic_lr_" + str(1e-3) + "_eps_" + str(20) 
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, write_images=True)
-  history = model.fit(train_dataset, epochs=5,
+  history = model.fit(train_dataset, epochs=20,
                           validation_data=test_dataset,
                           validation_steps=30, callbacks=[tensorboard_callback],verbose=0)
 
