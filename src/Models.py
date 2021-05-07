@@ -64,7 +64,7 @@ class MF(nn.Module):
         ui_interaction = torch.sum(vector_user * vector_item, dim=1)
         return ui_interaction
 
-    def loss(self, prediction, target):
+    def loss(self, x, prediction, target):
         """
         Function to calculate the loss metric
         """
