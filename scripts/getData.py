@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import numpy as np
 
-def get_data(data_path="../data"):
+def get_data(data_path="../data/cf"):
     assert os.path.isfile(data_path+"/train.csv"), f"{os.path.realpath(data_path)} : File does not exist"
     assert os.path.isfile(data_path+"/test.csv"), f"{os.path.realpath(data_path)} : File does not exist"
     # read data
