@@ -7,12 +7,12 @@ def get_data(data_path="../data/cf"):
     assert os.path.isfile(data_path+"/test.csv"), f"{os.path.realpath(data_path)} : File does not exist"
     # read data
     df_ratings = pd.read_csv(
-    'train.csv',
+    data_path+"/train.csv",
     usecols=['userId', 'movieId', 'rating'],
     dtype={'userId': 'int32', 'movieId': 'int32', 'rating': 'float32'})
 
     df_ratings_test = pd.read_csv(
-    'test.csv',
+    data_path+"/test.csv",
     usecols=['userId', 'movieId', 'rating'],
     dtype={'userId': 'int32', 'movieId': 'int32', 'rating': 'float32'})
     
