@@ -25,6 +25,7 @@ from loader import Loader
 
 # %load_ext tensorboard
 if __name__ == '__main__':
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     # get data and max name length
     df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
 
