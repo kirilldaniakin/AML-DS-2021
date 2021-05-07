@@ -33,6 +33,7 @@ from datetime import datetime
 
 # Import the Model Script
 from Models import *
+from loader import Loader
 
 # %load_ext tensorboard
 if __name__ == '__main__':
