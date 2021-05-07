@@ -26,7 +26,7 @@ from loader import Loader
 # %load_ext tensorboard
 if __name__ == '__main__':
     # get data and max name length
-    df_ratings, df_ratings_test = scripts.get_data(data_path="../data")
+    df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
 
     R = df_ratings.pivot(
         index='userId',
