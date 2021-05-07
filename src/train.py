@@ -97,7 +97,7 @@ if __name__ == '__main__':
         x, y = batch[0].to(device), batch[1].to(device)
         #print('x,y:', x.size(), y)
         y_pred = model(x)
-        loss = model.loss(x, R, y_pred, y)
+        loss = model.loss(x, y_pred, y)
         print("Loss:", loss.item())
         #loss.backward()
         i = 0
