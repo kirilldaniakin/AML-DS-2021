@@ -16,7 +16,7 @@ def get_data(data_path="../data"):
     usecols=['userId', 'movieId', 'rating'],
     dtype={'userId': 'int32', 'movieId': 'int32', 'rating': 'float32'})
     
-  return df_ratings, df_ratings_test
+    return df_ratings, df_ratings_test
 
 if __name__ == '__main__':
   pass
