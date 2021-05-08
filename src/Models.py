@@ -64,7 +64,7 @@ class MF(nn.Module):
         ui_interaction = torch.sum(vector_user * vector_item, dim=1)
         return ui_interaction
 
-    def loss(self, x, prediction, target, R=none):
+    def loss(self, x, prediction, target, R=None):
         """
         Function to calculate the loss metric
         """
@@ -72,7 +72,7 @@ class MF(nn.Module):
         #assert not torch.isnan(target).any()
         #print(prediction)
         #print(target)
-        if R is none:
+        if R is None:
             R = self.R
         for i in range(x.size()[0]):
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])))
