@@ -78,7 +78,7 @@ class MF(nn.Module):
         for i in range(x.size()[0]):
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])))
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])))
-            print("i=", i)
+            #print("i=", i)
             try:
                 if torch.index_select(torch.index_select(R, 0, torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])).item())),1,torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])).item())).item()!=0:
                     loss_mse += F.mse_loss(prediction, target.squeeze())
