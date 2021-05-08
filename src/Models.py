@@ -77,9 +77,12 @@ class MF(nn.Module):
         for i in range(x.size()[0]):
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])))
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])))
-            if torch.index_select(torch.index_select(R, 0, torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])).item())),1,torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])).item())).item()!=0:
-                loss_mse = F.mse_loss(prediction, target.squeeze())
-            else:
+            try:
+                if torch.index_select(torch.index_select(R, 0, torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])).item())),1,torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])).item())).item()!=0:
+                    loss_mse = F.mse_loss(prediction, target.squeeze())
+                else:
+                    loss_mse = torch.tensor(0)
+            except:
                 loss_mse = torch.tensor(0)
         # Compute L2 regularization over user (P) and item (Q) matrices
         prior_user = l2_regularize(self.user.weight) * self.c_vector
