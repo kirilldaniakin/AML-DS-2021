@@ -32,7 +32,7 @@ if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
 
-    R = df_ratings_test.pivot(
+    R = df_ratings.pivot(
         index='userId',
         columns='movieId',
         values='rating'
@@ -54,13 +54,19 @@ if __name__ == '__main__':
     mf = MF(R, n_user, n_item, writer=writer, k=10, c_vector=1e-6).to(device)
     mf.load_state_dict(torch.load("mf.pt"))
     
+    R_test = df_ratings_test.pivot(
+        index='userId',
+        columns='movieId',
+        values='rating'
+    ).fillna(0).to_numpy()
+    
     # Create a supervised evaluator
     def validation_step(engine, batch):
         mf.eval()
         with torch.no_grad():
             x, y = batch[0].to(device), batch[1].to(device)
             y_pred = mf(x)
-            loss = mf.loss(x, y_pred, y)
+            loss = mf.loss(x, y_pred, y, R_test)
             #print(loss.item())
             return loss.item()
 
