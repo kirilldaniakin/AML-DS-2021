@@ -1,7 +1,6 @@
 import numpy as np
 from context import scripts
 import scripts
-import tensorflow as tf
 import datetime
 # Import NumPy and PyTorch
 import numpy as np
@@ -123,8 +122,8 @@ if __name__ == '__main__':
     evaluator = create_supervised_evaluator(model, metrics=metrics)
 
     # Load the train and test data
-    train_loader = Loader(train_x, train_y, batchsize=1024)
-    test_loader = Loader(test_x, test_y, batchsize=1024)
+    train_loader = Loader(train_x, train_y, batchsize=4096)
+    test_loader = Loader(test_x, test_y, batchsize=4096)
 
 
     def log_training_loss(engine, log_interval=500):
