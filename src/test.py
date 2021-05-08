@@ -54,6 +54,8 @@ if __name__ == '__main__':
     n_user = R.shape[0]
     n_item = R.shape[1]
 
+    mf = MF(R, n_user, n_item, writer=writer, k=k, c_vector=c_vector).to(device)
+    mf.load_state_dict(torch.load("mf.pt"))
     # Setup TensorBoard logging
     log_dir = 'runs/simple_mf_01_' + str(datetime.now()).replace(' ', '_')
     writer = SummaryWriter(log_dir=log_dir)
@@ -62,19 +64,13 @@ if __name__ == '__main__':
     metrics = {'evaluation': MeanSquaredError()}
 
     # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(model, metrics=metrics)
+    evaluator = create_supervised_evaluator(mf, metrics=metrics)
     test_loader = Loader(test_x, test_y, batchsize=1024)
 
 
     mf = MF(R, n_user, n_item, writer=writer, k=k, c_vector=c_vector).to(device)
     mf.load_state_dict(torch.load("mf.pt"))
-
-    # Use Mean Squared Error as evaluation metric
-    metrics = {'evaluation': MeanSquaredError()}
-
-    # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(model, metrics=metrics)
-
+    
     # Load the train and test data
     test_loader = Loader(test_x, test_y, batchsize=1024)
 
