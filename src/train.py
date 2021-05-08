@@ -98,7 +98,7 @@ if __name__ == '__main__':
         #print('x,y:', x.size(), y)
         y_pred = model(x)
         loss = model.loss(x, y_pred, y)
-        print("Loss:", loss.item())
+        #print("Loss:", loss.item())
         #loss.backward()
         i = 0
         #print("Loss:" ,mae_loss_with_nans(y_pred, y))
@@ -140,21 +140,6 @@ if __name__ == '__main__':
 
 
     trainer.add_event_handler(event_name=Events.ITERATION_COMPLETED, handler=log_training_loss)
-
-
-    def log_validation_results(engine):
-        """
-        Function to log the validation loss
-        """
-        # When triggered, run the validation set
-        evaluator.run(test_loader)
-        # Keep track of the evaluation metrics
-        avg_loss = evaluator.state.metrics['evaluation']
-        print("Epoch[{}] Validation MSE: {:.2f} ".format(engine.state.epoch, avg_loss))
-        writer.add_scalar("validation/avg_loss", avg_loss, engine.state.epoch)
-
-
-    trainer.add_event_handler(event_name=Events.EPOCH_COMPLETED, handler=log_validation_results)
 
     # Run the model for 5 epochs
     trainer.run(train_loader, max_epochs=5)
