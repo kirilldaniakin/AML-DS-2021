@@ -60,6 +60,8 @@ if __name__ == '__main__':
         values='rating'
     ).fillna(0).to_numpy()
     
+    R_test = torch.from_numpy(R_test).to(device)
+    
     # Create a supervised evaluator
     def validation_step(engine, batch):
         mf.eval()
