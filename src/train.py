@@ -126,7 +126,7 @@ if __name__ == '__main__':
     test_loader = Loader(test_x, test_y, batchsize=4096)
 
 
-    def log_training_loss(engine, log_interval=62):
+    def log_training_loss(engine, log_interval=93):
         """
         Function to log the training loss
         """
