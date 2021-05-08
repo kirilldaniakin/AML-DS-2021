@@ -53,7 +53,7 @@ if __name__ == '__main__':
         values='rating'
     ).fillna(0)
     M = torch.from_numpy(M.mask(M>0, 1).to_numpy()).to(device).to_sparse()
-    R = torch.from_numpy(R).to(device).to_sparce()
+    R = torch.from_numpy(R).to(device).to_sparse()
     
     n_user = R.shape[0]
     n_item = R.shape[1]
