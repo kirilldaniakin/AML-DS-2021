@@ -57,37 +57,22 @@ if __name__ == '__main__':
     n_user = R.shape[0]
     n_item = R.shape[1]
 
-    mf = MF(R, n_user, n_item, writer=writer, k=k, c_vector=c_vector).to(device)
-    mf.load_state_dict(torch.load("mf.pt"))
-    # Setup TensorBoard logging
-    log_dir = 'runs/simple_mf_01_' + str(datetime.now()).replace(' ', '_')
-    writer = SummaryWriter(log_dir=log_dir)
-
-    # Use Mean Squared Error as evaluation metric
-    metrics = {'evaluation': MeanSquaredError()}
-
-    # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(mf, metrics=metrics)
-    test_loader = Loader(test_x, test_y, batchsize=1024)
-
-
-    mf = MF(R, n_user, n_item, writer=writer, k=k, c_vector=c_vector).to(device)
+    mf = MF(R, n_user, n_item, writer=writer, k=10, c_vector=1e-6).to(device)
     mf.load_state_dict(torch.load("mf.pt"))
     
-    # Load the train and test data
+    # Create a supervised evaluator
+    def validation_step(engine, batch):
+        mf.eval()
+        with torch.no_grad():
+            x, y = batch[0].to(device), batch[1].to(device)
+            y_pred = mf(x)
+            loss = mf.loss(x, y_pred, y)
+            print(loss.item())
+            return loss.item()
+
+    evaluator = Engine(validation_step)
+
+    # Load the test data
     test_loader = Loader(test_x, test_y, batchsize=1024)
 
-    def log_validation_results(engine):
-        """
-        Function to log the validation loss
-        """
-        # When triggered, run the validation set
-        evaluator.run(test_loader)
-        # Keep track of the evaluation metrics
-        avg_loss = evaluator.state.metrics['evaluation']
-        print("Epoch[{}] Validation MSE: {:.2f} ".format(engine.state.epoch, avg_loss))
-        writer.add_scalar("validation/avg_loss", avg_loss, engine.state.epoch)
-
-
-    evaluator.add_event_handler(event_name=Events.EPOCH_COMPLETED, handler=log_validation_results)
-    evaluator.run(test_loader)
+    print("Matrix Factorization test set loss:", evaluator.run(test_loader).output)
