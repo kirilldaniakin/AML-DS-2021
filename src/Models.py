@@ -86,7 +86,7 @@ class MF(nn.Module):
                     loss_mse += torch.tensor(0)
             except:
                 loss_mse += torch.tensor(0)
-        loss_mse /= x.size()[0]    
+        loss_mse = loss_mse / float(x.size()[0])    
         # Compute L2 regularization over user (P) and item (Q) matrices
         prior_user = l2_regularize(self.user.weight) * self.c_vector
         prior_item = l2_regularize(self.item.weight) * self.c_vector
