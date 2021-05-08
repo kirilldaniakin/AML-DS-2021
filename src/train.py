@@ -126,7 +126,7 @@ if __name__ == '__main__':
     test_loader = Loader(test_x, test_y, batchsize=4096)
 
 
-    def log_training_loss(engine, log_interval=500):
+    def log_training_loss(engine, log_interval=62):
         """
         Function to log the training loss
         """
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     trainer.add_event_handler(event_name=Events.ITERATION_COMPLETED, handler=log_training_loss)
 
     # Run the model for 5 epochs
-    trainer.run(train_loader, max_epochs=5)
+    trainer.run(train_loader, max_epochs=3)
 
     # Save the model to a separate folder
     torch.save(model.state_dict(), 'mf.pt')
