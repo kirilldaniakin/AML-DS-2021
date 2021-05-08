@@ -64,7 +64,7 @@ class MF(nn.Module):
         ui_interaction = torch.sum(vector_user * vector_item, dim=1)
         return ui_interaction
 
-    def loss(self, x, prediction, target):
+    def loss(self, x, prediction, target, R=none):
         """
         Function to calculate the loss metric
         """
@@ -72,10 +72,12 @@ class MF(nn.Module):
         #assert not torch.isnan(target).any()
         #print(prediction)
         #print(target)
+        if R is none:
+            R = self.R
         for i in range(x.size()[0]):
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])))
             #print(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])))
-            if torch.index_select(torch.index_select(self.R, 0, torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])).item())),1,torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])).item())).item()!=0:
+            if torch.index_select(torch.index_select(R, 0, torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([0])).item())),1,torch.tensor(torch.index_select(torch.index_select(x,0,torch.tensor([i])), 1, torch.tensor([1])).item())).item()!=0:
                 loss_mse = F.mse_loss(prediction, target.squeeze())
             else:
                 loss_mse = torch.tensor(0)
