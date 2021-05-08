@@ -61,7 +61,7 @@ if __name__ == '__main__':
             x, y = batch[0].to(device), batch[1].to(device)
             y_pred = mf(x)
             loss = mf.loss(x, y_pred, y)
-            print(loss.item())
+            #print(loss.item())
             return loss.item()
 
     evaluator = Engine(validation_step)
