@@ -32,7 +32,7 @@ if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
 
-    R = df_ratings.pivot(
+    R = df_ratings_test.pivot(
         index='userId',
         columns='movieId',
         values='rating'
@@ -46,12 +46,6 @@ if __name__ == '__main__':
     df_ratings_test=df_ratings_test.replace({"userId": map_u})
     test_x = df_ratings_test[['userId', 'movieId']].to_numpy().astype(np.int64)
     test_y = df_ratings_test['rating'].to_numpy()
-    M = df_ratings.pivot(
-        index='userId',
-        columns='movieId',
-        values='rating'
-    ).fillna(0)
-    M = torch.from_numpy(M.mask(M>0, 1).to_numpy()).to(device)
     R = torch.from_numpy(R).to(device)
     
     n_user = R.shape[0]
