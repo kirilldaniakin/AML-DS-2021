@@ -94,7 +94,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             x, y = batch[0].to(device), batch[1].to(device)
             users = torch.index_select(x,1,torch.tensor([0]))
-            movies = users = torch.index_select(x,1,torch.tensor([1]))
+            movies = torch.index_select(x,1,torch.tensor([1]))
             y_pred = net(users, movies)
             loss = net.loss(y_pred, y)
             return loss.item()
