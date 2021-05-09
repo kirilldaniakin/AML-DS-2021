@@ -133,10 +133,10 @@ if __name__ == '__main__':
     trainer.add_event_handler(event_name=Events.ITERATION_COMPLETED, handler=log_training_loss)
 
     # Run the model for 5 epochs
-    trainer.run(train_loader, max_epochs=2)
+    #trainer.run(train_loader, max_epochs=2)
 
     # Save the model to a separate folder
-    torch.save(model.state_dict(), 'mf.pt')
+    #torch.save(model.state_dict(), 'mf.pt')
     
     print("ANN train")
     df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
@@ -149,6 +149,7 @@ if __name__ == '__main__':
     batches = []
 
     #Create batches
+    batch_sz = 128
     for i in range(0, n_samples, batch_sz):
         limit =  min(i + batch_sz, n_samples)
         users_batch, movies_batch, rates_batch = users[i: limit], movies[i: limit], rates[i: limit]
