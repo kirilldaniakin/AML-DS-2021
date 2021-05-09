@@ -147,7 +147,7 @@ class RecommenderNet(nn.Module):
         self.hidden.apply(init)
         init(self.fc)
 
-    def loss(self, prediction, target, itr):
+    def loss(self, prediction, target, itr=0):
         """
         Function to calculate the loss metric
         """
