@@ -72,7 +72,6 @@ if __name__ == '__main__':
 
     #print(model.user.weight)
 
-    # Use Adam optimizer
     #for p in model.user.parameters():
     #    print(p)
     optimizer1 = torch.optim.SGD(model.user.parameters(), lr=lr)
@@ -152,8 +151,8 @@ if __name__ == '__main__':
     writer = SummaryWriter(log_dir=log_dir)
     net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
     criterion = nn.MSELoss(reduction='mean')
-    optimizer = optim.Adam(net.parameters(), lr=1e-3)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.3, patience=2)
+    optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.3, patience=2)
     epochs = 5
 
     itr = 0
