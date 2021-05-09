@@ -77,3 +77,16 @@ if __name__ == '__main__':
     test_loader = Loader(test_x, test_y, batchsize=1024)
 
     print("Matrix Factorization test set loss:", evaluator.run(test_loader).output)
+    
+    log_dir = 'runs/ANN'
+    writer = SummaryWriter(log_dir=log_dir)
+    net = RecommenderNet(n_users=n_users, n_movies=n_movies, writer=writer).to(device)
+    net.load_state_dict(torch.load("mf.pt"))
+    
+    # Use Mean Squared Error as evaluation metric
+    metrics = {'evaluation': MeanSquaredError()}
+
+    # Create a supervised evaluator
+    evaluator = create_supervised_evaluator(model, metrics=metrics)
+    
+    print("ANN test set loss:", evaluator.state.metrics['evaluation'])
