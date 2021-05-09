@@ -147,6 +147,7 @@ if __name__ == '__main__':
     torch.save(model.state_dict(), 'mf.pt')
     
     print("ANN train")
+    df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
     log_dir = 'runs/ANN'
     writer = SummaryWriter(log_dir=log_dir)
     net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
