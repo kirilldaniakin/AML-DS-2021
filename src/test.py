@@ -89,4 +89,4 @@ if __name__ == '__main__':
     # Create a supervised evaluator
     evaluator = create_supervised_evaluator(net, metrics=metrics)
     
-    print("ANN test set loss:", evaluator.state.metrics['evaluation'])
+    print("ANN test set loss:", evaluator.state.metrics)
