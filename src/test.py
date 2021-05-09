@@ -87,6 +87,16 @@ if __name__ == '__main__':
     metrics = {'evaluation': MeanSquaredError()}
 
     # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(net, metrics=metrics)
+    #evaluator = create_supervised_evaluator(net, metrics=metrics)
     
-    print("ANN test set loss:", evaluator.state.metrics)
+    def validation_step(engine, batch):
+        net.eval()
+        with torch.no_grad():
+            x, y = batch[0].to(device), batch[1].to(device)
+            y_pred = mf(x)
+            loss = net.loss(x, y_pred, y)
+            return loss.item()
+
+    evaluator = Engine(validation_step)
+    
+    print("ANN test set loss:", evaluator.run(test_loader).output)
