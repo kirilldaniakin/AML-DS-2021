@@ -54,7 +54,7 @@ if __name__ == '__main__':
     ).fillna(0)
     M = torch.from_numpy(M.mask(M>0, 1).to_numpy()).to(device)
     R = torch.from_numpy(R).to(device)
-    
+    print("MF train")
     n_user = R.shape[0]
     n_item = R.shape[1]
 
@@ -141,7 +141,33 @@ if __name__ == '__main__':
     trainer.add_event_handler(event_name=Events.ITERATION_COMPLETED, handler=log_training_loss)
 
     # Run the model for 5 epochs
-    trainer.run(train_loader, max_epochs=3)
+    trainer.run(train_loader, max_epochs=2)
 
     # Save the model to a separate folder
     torch.save(model.state_dict(), 'mf.pt')
+    
+    print("ANN train")
+    log_dir = 'runs/ANN'
+    writer = SummaryWriter(log_dir=log_dir)
+    net = RecommenderNet(n_users=n_users, n_movies=n_movies, writer=writer).to(device)
+    criterion = nn.MSELoss(reduction='mean')
+    optimizer = optim.Adam(net.parameters(), lr=1e-3)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.3, patience=2)
+    epochs = 5
+
+    itr = 0
+    for epoch in range(epochs):
+        train_loss = 0
+        for users_batch, movies_batch, rates_batch in batches:
+            net.zero_grad()
+            out = net(users_batch.to(device), movies_batch.to(device), [1, 5]).squeeze()
+            loss = net.loss(rates_batch.to(device), out, itr)
+            itr += 1
+            loss.backward()
+            optimizer.step()
+            train_loss += loss
+        scheduler.step(loss)
+        print("Loss at epoch {} = {}".format(epoch, loss.item()))
+    print("Last Loss = {}".format(loss.item()))
+    
+    torch.save(net.state_dict(), 'net.pt')
