@@ -87,6 +87,6 @@ if __name__ == '__main__':
     metrics = {'evaluation': MeanSquaredError()}
 
     # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(model, metrics=metrics)
+    evaluator = create_supervised_evaluator(net, metrics=metrics)
     
     print("ANN test set loss:", evaluator.state.metrics['evaluation'])
