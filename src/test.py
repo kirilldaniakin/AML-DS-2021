@@ -94,7 +94,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             x, y = batch[0].to(device), batch[1].to(device)
             y_pred = mf(x)
-            loss = net.loss(x, y_pred, y)
+            loss = net.loss(y_pred, y)
             return loss.item()
 
     evaluator = Engine(validation_step)
