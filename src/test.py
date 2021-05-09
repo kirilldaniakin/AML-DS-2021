@@ -93,7 +93,7 @@ if __name__ == '__main__':
         net.eval()
         with torch.no_grad():
             x, y = batch[0].to(device), batch[1].to(device)
-            y_pred = mf(x)
+            y_pred = net(x)
             loss = net.loss(y_pred, y)
             return loss.item()
 
