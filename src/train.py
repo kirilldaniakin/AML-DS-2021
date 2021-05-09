@@ -149,7 +149,7 @@ if __name__ == '__main__':
     print("ANN train")
     log_dir = 'runs/ANN'
     writer = SummaryWriter(log_dir=log_dir)
-    net = RecommenderNet(n_users=n_users, n_movies=n_movies, writer=writer).to(device)
+    net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
     criterion = nn.MSELoss(reduction='mean')
     optimizer = optim.Adam(net.parameters(), lr=1e-3)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.3, patience=2)
