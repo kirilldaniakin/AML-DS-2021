@@ -133,7 +133,7 @@ if __name__ == '__main__':
     trainer.add_event_handler(event_name=Events.ITERATION_COMPLETED, handler=log_training_loss)
 
     # Run the model for 5 epochs
-    trainer.run(train_loader, max_epochs=2)
+    trainer.run(train_loader, max_epochs=1)
 
     # Save the model to a separate folder
     torch.save(model.state_dict(), 'mf.pt')
