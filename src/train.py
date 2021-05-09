@@ -113,13 +113,6 @@ if __name__ == '__main__':
 
     trainer = Engine(train_step)
 
-
-    # Use Mean Squared Error as evaluation metric
-    metrics = {'evaluation': MeanSquaredError()}
-
-    # Create a supervised evaluator
-    evaluator = create_supervised_evaluator(model, metrics=metrics)
-
     # Load the train and test data
     train_loader = Loader(train_x, train_y, batchsize=4096)
     test_loader = Loader(test_x, test_y, batchsize=4096)
@@ -147,6 +140,20 @@ if __name__ == '__main__':
     
     print("ANN train")
     df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
+    users = df_ratings['userId'].values - 1
+    movies = df_ratings['movieId'].values - 1
+    rates = df_ratings['rating'].values
+    n_samples = len(rates)
+
+    n_users, n_movies =  max(users)+1, max(movies)+1
+    batches = []
+
+    #Create batches
+    for i in range(0, n_samples, batch_sz):
+        limit =  min(i + batch_sz, n_samples)
+        users_batch, movies_batch, rates_batch = users[i: limit], movies[i: limit], rates[i: limit]
+        batches.append((torch.tensor(users_batch, dtype=torch.long), torch.tensor(movies_batch, dtype=torch.long),
+                        torch.tensor(rates_batch, dtype=torch.float)))
     log_dir = 'runs/ANN'
     writer = SummaryWriter(log_dir=log_dir)
     net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
