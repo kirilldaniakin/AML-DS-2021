@@ -109,7 +109,7 @@ class RecommenderNet(nn.Module):
         self.u = nn.Embedding(n_users, n_factors)
         self.m = nn.Embedding(n_movies, n_factors)
         self.drop = nn.Dropout(embedding_dropout)
-        self.hidden = nn.Sequential(nn.Linear(n_factors, 128),
+        self.hidden = nn.Sequential(nn.Linear(n_factors*2, 128),
                                     nn.ReLU(),
                                     nn.Dropout(0.2),
                                     nn.Linear(128, 256),
