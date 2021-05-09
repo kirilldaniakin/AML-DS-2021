@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     # Load the test data
     test_loader = Loader(test_x, test_y, batchsize=1024)
-
+    
     print("Matrix Factorization test set loss:", evaluator.run(test_loader).output)
     
     log_dir = 'runs/ANN'
@@ -93,7 +93,9 @@ if __name__ == '__main__':
         net.eval()
         with torch.no_grad():
             x, y = batch[0].to(device), batch[1].to(device)
-            y_pred = net(x)
+            users = torch.index_select(x,1,torch.tensor([0]))
+            movies = users = torch.index_select(x,1,torch.tensor([1]))
+            y_pred = net(users, movies)
             loss = net.loss(y_pred, y)
             return loss.item()
 
