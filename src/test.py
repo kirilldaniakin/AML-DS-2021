@@ -80,8 +80,8 @@ if __name__ == '__main__':
     
     log_dir = 'runs/ANN'
     writer = SummaryWriter(log_dir=log_dir)
-    net = RecommenderNet(n_users=n_users, n_movies=n_movies, writer=writer).to(device)
-    net.load_state_dict(torch.load("mf.pt"))
+    net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
+    net.load_state_dict(torch.load("net.pt"))
     
     # Use Mean Squared Error as evaluation metric
     metrics = {'evaluation': MeanSquaredError()}
