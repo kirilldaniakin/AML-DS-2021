@@ -3,18 +3,6 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-class my_function(torch.autograd.Function):
-    def forward(self, input, user_weight, item_weight, c_vector):
-        self.saved_for_backward = [input, user_weight, item_weight, c_vector]
-        # output = [do something with input and parameters]
-        return output
-
-    def backward(self, grad_output):
-        input, parameters = self.saved_for_backward
-        # grad_input = [derivate forward(input) wrt parameters] * grad_output
-        #grad_input = 
-        return grad_input
-
 # Define the MF Model
 class MF(nn.Module):
     # Iteration counter
@@ -113,3 +101,66 @@ def l2_regularize(array):
     """
     loss = torch.sum(array ** 2.0)
     return loss
+
+class RecommenderNet(nn.Module):
+    def __init__(self, n_users, n_movies, writer, n_factors=10, embedding_dropout=0.02, dropout_rate=0.2):
+        super().__init__()
+
+        self.u = nn.Embedding(n_users, n_factors)
+        self.m = nn.Embedding(n_movies, n_factors)
+        self.drop = nn.Dropout(embedding_dropout)
+        self.hidden = nn.Sequential(nn.Linear(n_factors*2, 128),
+                                    nn.ReLU(),
+                                    nn.Dropout(0.2),
+                                    nn.Linear(128, 256),
+                                    nn.ReLU(),
+                                    nn.Dropout(0.2),
+                                    nn.Linear(256, 128),
+                                    nn.ReLU(),
+                                    nn.Dropout(0.2)) #TODO: Implement the hidden layers
+        self.fc = nn.Linear(128, 1)
+        self.writer = writer
+        self._init()
+
+    def forward(self, users, movies, minmax=[1,5]):
+        features = torch.cat([self.u(users), self.m(movies)], dim=1)
+        x = self.drop(features)
+        x = self.hidden(x)
+        out = torch.sigmoid(self.fc(x))
+        
+        if minmax is not None: #Scale the output to [1,5]
+            min_rating, max_rating = minmax
+            out = out*(max_rating - min_rating) + min_rating
+        return out
+    
+    def _init(self):
+        """
+        Initialize embeddings and hidden layers weights with xavier.
+        """
+        def init(m):
+            if type(m) == nn.Linear:
+                torch.nn.init.xavier_uniform_(m.weight)
+                m.bias.data.fill_(0.01)
+
+        self.u.weight.data.uniform_(-0.05, 0.05)
+        self.m.weight.data.uniform_(-0.05, 0.05)
+        self.hidden.apply(init)
+        init(self.fc)
+
+    def loss(self, prediction, target, itr):
+        """
+        Function to calculate the loss metric
+        """
+        # Calculate the Mean Squared Error between target = R_ui and prediction = p_u * q_i
+        loss_mse = F.mse_loss(prediction, target.squeeze(), reduction='mean')
+
+        # Add up the MSE loss + user & item regularization
+        total = loss_mse
+
+        # This logs all local variables to tensorboard
+        for name, var in locals().items():
+            if type(var) is torch.Tensor and var.nelement() == 1 and self.writer is not None:
+                self.writer.add_scalar(name, var, itr)
+        if type(total) is int:        
+            return torch.tensor(total)
+        else: return total      
