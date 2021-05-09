@@ -139,7 +139,7 @@ if __name__ == '__main__':
     #torch.save(model.state_dict(), 'mf.pt')
     
     print("ANN train")
-    df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
+    #df_ratings, df_ratings_test = scripts.get_data(data_path="../data/cf")
     users = df_ratings['userId'].values - 1
     movies = df_ratings['movieId'].values - 1
     rates = df_ratings['rating'].values
