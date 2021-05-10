@@ -83,6 +83,11 @@ if __name__ == '__main__':
     net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
     net.load_state_dict(torch.load("net.pt"))
     
+    users = df_ratings_test['userId'].values
+    movies = df_ratings_test['movieId'].values
+    rates = df_ratings_test['rating'].values
+    n_samples = len(rates)
+    
     batch_sz = 128
     for i in range(0, n_samples, batch_sz):
         limit =  min(i + batch_sz, n_samples)
