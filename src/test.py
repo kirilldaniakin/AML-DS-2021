@@ -83,22 +83,21 @@ if __name__ == '__main__':
     net = RecommenderNet(n_users=n_user, n_movies=n_item, writer=writer).to(device)
     net.load_state_dict(torch.load("net.pt"))
     
-    # Use Mean Squared Error as evaluation metric
-    metrics = {'evaluation': MeanSquaredError()}
-
-    # Create a supervised evaluator
-    #evaluator = create_supervised_evaluator(net, metrics=metrics)
+    batch_sz = 128
+    for i in range(0, n_samples, batch_sz):
+        limit =  min(i + batch_sz, n_samples)
+        users_batch, movies_batch, rates_batch = users[i: limit], movies[i: limit], rates[i: limit]
+        batches.append((torch.tensor(users_batch, dtype=torch.long), torch.tensor(movies_batch, dtype=torch.long),
+                        torch.tensor(rates_batch, dtype=torch.float)))
+    log_dir = 'runs/ANN_test'
+    writer = SummaryWriter(log_dir=log_dir)
     
-    def validation_step(engine, batch):
+    for users_batch, movies_batch, rates_batch in batches:
         net.eval()
         with torch.no_grad():
-            x, y = batch[0].to(device), batch[1].to(device)
-            users = torch.index_select(x,1,torch.tensor([0]))
-            movies = torch.index_select(x,1,torch.tensor([1]))
-            y_pred = net(users, movies)
-            loss = net.loss(y_pred, y)
+            out = net(users_batch.to(device), movies_batch.to(device), [1, 5]).squeeze()
+            loss = net.loss(rates_batch.to(device), out)
+            optimizer.step()
             return loss.item()
-
-    evaluator = Engine(validation_step)
-    
-    print("ANN test set loss:", evaluator.run(test_loader).output)
+        #print("Loss at epoch {} = {}".format(epoch, loss.item()))
+    print("Test Loss = {}".format(loss.item()))
