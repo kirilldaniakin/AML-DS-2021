@@ -87,7 +87,7 @@ if __name__ == '__main__':
     movies = df_ratings_test['movieId'].values
     rates = df_ratings_test['rating'].values
     n_samples = len(rates)
-    
+    batches = []
     batch_sz = 128
     for i in range(0, n_samples, batch_sz):
         limit =  min(i + batch_sz, n_samples)
