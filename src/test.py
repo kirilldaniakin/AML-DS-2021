@@ -92,12 +92,12 @@ if __name__ == '__main__':
     log_dir = 'runs/ANN_test'
     writer = SummaryWriter(log_dir=log_dir)
     
+    i = 0
     for users_batch, movies_batch, rates_batch in batches:
         net.eval()
+        i+=1
         with torch.no_grad():
             out = net(users_batch.to(device), movies_batch.to(device), [1, 5]).squeeze()
-            loss = net.loss(rates_batch.to(device), out)
-            optimizer.step()
-            return loss.item()
+            loss = net.loss(rates_batch.to(device), out, i)
         #print("Loss at epoch {} = {}".format(epoch, loss.item()))
-    print("Test Loss = {}".format(loss.item()))
+    print("ANN Test Loss = {}".format(loss.item()))
